@@ -1,0 +1,32 @@
+### producer
+22:32:20.428 [producer] PUBLISHED event_id=9ad9db6a order_id=ORD-7441 item_id=SKU-COFFEE quantity=5
+22:32:20.428 [producer] PUBLISHED event_id=e3f55b5f order_id=ORD-7332 item_id=SKU-BANANA quantity=3
+22:32:20.428 [producer] PUBLISHED event_id=425ad45a order_id=ORD-9770 item_id=SKU-BANANA quantity=2
+22:32:20.428 [producer] PUBLISHED event_id=7c47b084 order_id=ORD-8911 item_id=SKU-BANANA quantity=1
+22:32:20.428 [producer] PUBLISHED event_id=380cae0e order_id=ORD-4453 item_id=SKU-APPLE quantity=4
+22:32:20.428 [producer] PUBLISHED event_id=71038b17 order_id=ORD-9660 item_id=SKU-COFFEE quantity=3
+22:32:20.428 [producer] Done. 6 message(s) sent to queue 'orders'
+
+### worker-1
+22:21:50.959 [worker-1] Waiting for messages on queue 'orders' (prefetch=1). Ctrl+C to stop.
+22:32:20.448 [worker-1] RECEIVED event_id=9ad9db6a order_id=ORD-7441 item_id=SKU-COFFEE qty=5 delivery_tag=1 redelivered=False
+22:32:20.452 [worker-1] PROCESSING order_id=ORD-7441: reserving 5 x SKU-COFFEE ...
+22:32:21.457 [worker-1] DONE + ACKED event_id=9ad9db6a order_id=ORD-7441
+22:32:21.459 [worker-1] RECEIVED event_id=425ad45a order_id=ORD-9770 item_id=SKU-BANANA qty=2 delivery_tag=2 redelivered=False
+22:32:21.460 [worker-1] PROCESSING order_id=ORD-9770: reserving 2 x SKU-BANANA ...
+22:32:22.462 [worker-1] DONE + ACKED event_id=425ad45a order_id=ORD-9770
+22:32:22.463 [worker-1] RECEIVED event_id=71038b17 order_id=ORD-9660 item_id=SKU-COFFEE qty=3 delivery_tag=3 redelivered=False
+22:32:22.464 [worker-1] PROCESSING order_id=ORD-9660: reserving 3 x SKU-COFFEE ...
+22:32:23.467 [worker-1] DONE + ACKED event_id=71038b17 order_id=ORD-9660
+
+### worker-2
+22:29:26.787 [worker-2] Waiting for messages on queue 'orders' (prefetch=1). Ctrl+C to stop.
+22:32:20.447 [worker-2] RECEIVED event_id=e3f55b5f order_id=ORD-7332 item_id=SKU-BANANA qty=3 delivery_tag=1 redelivered=False
+22:32:20.450 [worker-2] PROCESSING order_id=ORD-7332: reserving 3 x SKU-BANANA ...
+22:32:21.457 [worker-2] DONE + ACKED event_id=e3f55b5f order_id=ORD-7332
+22:32:21.459 [worker-2] RECEIVED event_id=7c47b084 order_id=ORD-8911 item_id=SKU-BANANA qty=1 delivery_tag=2 redelivered=False
+22:32:21.460 [worker-2] PROCESSING order_id=ORD-8911: reserving 1 x SKU-BANANA ...
+22:32:22.462 [worker-2] DONE + ACKED event_id=7c47b084 order_id=ORD-8911
+22:32:22.463 [worker-2] RECEIVED event_id=380cae0e order_id=ORD-4453 item_id=SKU-APPLE qty=4 delivery_tag=3 redelivered=False
+22:32:22.464 [worker-2] PROCESSING order_id=ORD-4453: reserving 4 x SKU-APPLE ...
+22:32:23.468 [worker-2] DONE + ACKED event_id=380cae0e order_id=ORD-4453

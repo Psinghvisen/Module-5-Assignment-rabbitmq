@@ -1,0 +1,22 @@
+### producer
+22:50:16.198 [producer] PUBLISHED event_id=ce2525e7 order_id=ORD-8077 item_id=SKU-MILK quantity=3
+22:50:16.199 [producer] PUBLISHED event_id=e0d434dd order_id=ORD-3597 item_id=SKU-BREAD quantity=5
+22:50:16.199 [producer] PUBLISHED event_id=54142c62 order_id=ORD-9409 item_id=SKU-APPLE quantity=1
+22:50:16.199 [producer] PUBLISHED (DUPLICATE re-send) event_id=ce2525e7 order_id=ORD-8077 item_id=SKU-MILK quantity=3
+22:50:16.199 [producer] Done. 4 message(s) sent to queue 'orders'
+
+### worker-1
+22:50:16.202 [worker-1] RECEIVED event_id=e0d434dd order_id=ORD-3597 item_id=SKU-BREAD qty=5 delivery_tag=1 redelivered=False
+22:50:16.203 [worker-1] PROCESSING order_id=ORD-3597: reserving 5 x SKU-BREAD ...
+22:50:17.208 [worker-1] DONE + ACKED event_id=e0d434dd order_id=ORD-3597
+22:50:17.209 [worker-1] RECEIVED event_id=ce2525e7 order_id=ORD-8077 item_id=SKU-MILK qty=3 delivery_tag=2 redelivered=False
+22:50:17.210 [worker-1] DUPLICATE detected event_id=ce2525e7 order_id=ORD-8077 -> skipping business action
+22:50:17.210 [worker-1] ACKED duplicate event_id=ce2525e7 (removed from queue, no side effects)
+
+### worker-2
+22:50:16.201 [worker-2] RECEIVED event_id=ce2525e7 order_id=ORD-8077 item_id=SKU-MILK qty=3 delivery_tag=2 redelivered=False
+22:50:16.203 [worker-2] PROCESSING order_id=ORD-8077: reserving 3 x SKU-MILK ...
+22:50:17.208 [worker-2] DONE + ACKED event_id=ce2525e7 order_id=ORD-8077
+22:50:17.209 [worker-2] RECEIVED event_id=54142c62 order_id=ORD-9409 item_id=SKU-APPLE qty=1 delivery_tag=3 redelivered=False
+22:50:17.210 [worker-2] PROCESSING order_id=ORD-9409: reserving 1 x SKU-APPLE ...
+22:50:18.216 [worker-2] DONE + ACKED event_id=54142c62 order_id=ORD-9409

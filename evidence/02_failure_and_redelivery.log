@@ -1,0 +1,26 @@
+### worker-1 (started alone with --crash-before-ack --work-seconds 30)
+22:40:14.902 [worker-1] Waiting for messages on queue 'orders' (prefetch=1). Ctrl+C to stop.
+22:40:42.625 [worker-1] RECEIVED event_id=2833c3d4 order_id=ORD-1840 item_id=SKU-BANANA qty=2 delivery_tag=1 redelivered=False
+22:40:42.626 [worker-1] PROCESSING order_id=ORD-1840: reserving 2 x SKU-BANANA ...
+22:41:12.631 [worker-1] SIMULATED CRASH before ACK for event_id=2833c3d4 -> exiting now, NO ACK sent
+
+### producer + queue state
+22:40:42.622 [producer] PUBLISHED event_id=2833c3d4 order_id=ORD-1840 item_id=SKU-BANANA quantity=2
+22:40:42.622 [producer] Done. 1 message(s) sent to queue 'orders'
+
+$ docker exec rabbitmq rabbitmqctl list_queues name messages_ready messages_unacknowledged   # while worker-1 processing
+name    messages_ready  messages_unacknowledged
+orders  0       1
+
+$ docker exec rabbitmq rabbitmqctl list_queues name messages_ready messages_unacknowledged   # after worker-1 crash
+name    messages_ready  messages_unacknowledged
+orders  1       0
+
+### worker-2 (started after the crash)
+22:42:47.034 [worker-2] Waiting for messages on queue 'orders' (prefetch=1). Ctrl+C to stop.
+22:42:47.035 [worker-2] RECEIVED event_id=2833c3d4 order_id=ORD-1840 item_id=SKU-BANANA qty=2 delivery_tag=1 redelivered=True
+22:42:47.035 [worker-2] PROCESSING order_id=ORD-1840: reserving 2 x SKU-BANANA ...
+22:42:48.043 [worker-2] DONE + ACKED event_id=2833c3d4 order_id=ORD-1840
+
+### worker-1 restarted normally (system keeps running)
+22:44:38.439 [worker-1] Waiting for messages on queue 'orders' (prefetch=1). Ctrl+C to stop.
